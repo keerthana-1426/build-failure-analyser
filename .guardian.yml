@@ -1,0 +1,7 @@
+checks:
+  static_analysis:
+    checkstyle: true
+    spotbugs: true
+    commands:
+      - ["./mvnw", "test"]
+      - ["mvnw.cmd", "test"]

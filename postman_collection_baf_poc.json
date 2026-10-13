@@ -1,0 +1,41 @@
+{
+  "info": {
+    "name": "Build Failure Analyzer PoC",
+    "_postman_id": "baf-poc-collection",
+    "description": "Collection to test extractRelevantError (testExtractMavenBuildFailure)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Extract Maven Build Failure",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"buildLog\": \"[INFO] -------------------------------------------------------\\n[INFO] BUILD FAILURE\\n[INFO] -------------------------------------------------------\\n[ERROR] COMPILATION ERROR : \\n[ERROR] /src/main/java/org/example/Foo.java:[10,5] cannot find symbol\\n[ERROR] symbol:   class Bar\\n[ERROR] location: class org.example.Foo\\n\\n    at org.example.Foo.main(Foo.java:10)\\n\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/analyze/extract",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "analyze",
+            "extract"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
+
