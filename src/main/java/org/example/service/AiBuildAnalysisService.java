@@ -18,7 +18,7 @@ import java.util.Map;
  * (HTTP client, authentication, retries, rate limiting, etc.).
  */
 @Service
-public class AIBuildAnalysisService {
+public class AiBuildAnalysisService {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
