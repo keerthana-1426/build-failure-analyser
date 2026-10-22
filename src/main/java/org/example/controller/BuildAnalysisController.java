@@ -1,50 +1,32 @@
 package org.example.controller;
 
-import org.example.dto.BuildAnalysisRequest;
 import org.example.service.BuildAnalysisService;
-import org.example.util.LogValidator;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.http.MediaType;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/analyze")
+@RequestMapping({"/build", ""})
 public class BuildAnalysisController {
 
-    private static final Logger logger = LoggerFactory.getLogger(BuildAnalysisController.class);
-    private final BuildAnalysisService analysisService;
+    private final BuildAnalysisService buildAnalysisService;
 
-    public BuildAnalysisController(BuildAnalysisService analysisService) {
-        this.analysisService = analysisService;
+    @Autowired
+    public BuildAnalysisController(BuildAnalysisService buildAnalysisService) {
+        this.buildAnalysisService = buildAnalysisService;
     }
 
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> analyze(@RequestBody(required = false) BuildAnalysisRequest request) {
-        String buildLog = request == null ? null : request.getBuildLog();
-        ResponseEntity<?> validation = LogValidator.validate(buildLog, logger);
-        if (validation != null) {
-            return validation;
-        }
-
-        logger.info("Analyzing build log: length={} chars", buildLog.length());
-        var response = analysisService.analyze(buildLog);
-        return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(response);
+    @GetMapping("/health")
+    public ResponseEntity<String> health() {
+        return ResponseEntity.ok("UP");
     }
 
-    @PostMapping(path = "/extract", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
-    public ResponseEntity<?> extract(@RequestBody(required = false) BuildAnalysisRequest request) {
-        String buildLog = request == null ? null : request.getBuildLog();
-        ResponseEntity<?> validation = LogValidator.validate(buildLog, logger);
-        if (validation != null) {
-            return validation;
-        }
-
-        String snippet = analysisService.extractRelevantError(buildLog);
-        return ResponseEntity.ok().contentType(MediaType.TEXT_PLAIN).body(snippet);
+    @PostMapping("/extract")
+    public String extractRelevantError(@RequestBody String buildLog) throws Exception {
+        return buildAnalysisService.analyzeWithAI(buildLog, "build-log-context");
     }
 }

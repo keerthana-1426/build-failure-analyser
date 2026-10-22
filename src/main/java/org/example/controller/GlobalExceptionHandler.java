@@ -13,17 +13,17 @@ import org.springframework.web.context.request.WebRequest;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<Map<String, String>> handleBadJson(HttpMessageNotReadableException ex, WebRequest request) {
-        logger.warn("Malformed JSON request: {}", ex.getMessage());
+        LOGGER.warn("Malformed JSON request: {}", ex.getMessage());
         return ResponseEntity.badRequest().body(Map.of("error", "Malformed JSON request"));
     }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Map<String, String>> handleAll(Exception ex) {
-        logger.error("Unhandled exception: {}", ex.getMessage(), ex);
+        LOGGER.error("Unhandled exception: {}", ex.getMessage(), ex);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(Map.of("error", "Internal server error"));
     }

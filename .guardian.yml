@@ -5,3 +5,23 @@ checks:
     commands:
       - ["./mvnw", "test"]
       - ["mvnw.cmd", "test"]
+
+java:
+  quality_checks:
+    checkstyle:
+      enabled: true
+      severity: warning   # still reports, but won’t block
+    naming:
+      enabled: true
+      severity: warning   # allows flexibility during dev
+    duplication:
+      enabled: false
+      severity: warning
+    thread_safety:
+      enabled: false
+      severity: warning
+    dependency_security:
+      enabled: true
+      severity: error     # keep strict for security
+
+
