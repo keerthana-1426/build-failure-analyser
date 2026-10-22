@@ -21,5 +21,6 @@ public class BuildAnalysisService {
      */
     public String analyzeWithAI(String snippet, String context) throws JsonProcessingException {
         return aiBuildAnalysisService.analyzeError(snippet, context);
+        // test commit
     }
 }
