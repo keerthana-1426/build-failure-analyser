@@ -24,4 +24,9 @@ public class BuildAnalysisControllerTest {
         mockMvc.perform(get("/health"))
                 .andExpect(status().isOk());
     }
+
+    //@Test
+    public void test() throws Exception {
+
+    }
 }
